@@ -17,6 +17,7 @@ print("bryce made a change")
 
 fc.front_car(plt, car_top, car_bottom, car_ground)
 fsc.front_side_car(plt, car_top, car_bottom, car_ground)
+cd.front_side_car(plt, car_top, car_bottom, car_ground)
 
 # Show the plot
 plt.show()
