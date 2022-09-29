@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import front_car as fc
 import front_side_car as fsc
+import car_body as cd
 
 
 car_top = -12
