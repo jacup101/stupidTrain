@@ -3,6 +3,21 @@ import numpy as np
 import front_car as fc
 import front_side_car as fsc
 
+x1 = 0
+x2 = 220
+y1 = -60
+y2 = 0
+dx = 10
+dy = 10
+
+plt.axes().set_aspect(1)
+plt.axis([x1, x2, y1, y2])
+
+plt.xticks(np.arange(x1, x2, dx))
+plt.yticks(np.arange(y1, y2, dy))
+
+plt.axis('on')
+plt.grid(True, color = 'k')
 
 car_top = -12
 car_bottom = -47.5
