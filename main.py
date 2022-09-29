@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import front_side_car as fsc
 
 
 car_top = -12
@@ -11,3 +12,8 @@ car_ground = -49
 # Below wheels : 
 print("hello world")
 print("bryce made a change")
+
+fsc.front_side_car(plt, car_top, car_bottom, car_ground)
+
+# Show the plot
+plt.show()
