@@ -4,35 +4,31 @@ import front_car as fc
 import front_side_car as fsc
 import car_body as cd
 
-x1 = 0
-x2 = 220
-y1 = -60
-y2 = 0
-dx = 10
-dy = 10
+# of the form min, max, diff
+xvars = [0, 220, 10]
+yvars = [-60, 0, 10]
 
+###### Set up our plot ######
+# Add aspect ratio, to prevent distortion
 plt.axes().set_aspect(1)
-plt.axis([x1, x2, y1, y2])
-
-plt.xticks(np.arange(x1, x2, dx))
-plt.yticks(np.arange(y1, y2, dy))
-
+# Set up axis
+plt.axis([xvars[0], xvars[1], yvars[0], yvars[1]])
+# Add ticks
+plt.xticks(np.arange(xvars[0], xvars[1], xvars[2]))
+plt.yticks(np.arange(yvars[0], yvars[1], yvars[2]))
+# Turn axis + grid on
 plt.axis('on')
 plt.grid(True, color = 'k')
 
+##### Declare other important variables #####
 car_top = -12
 car_bottom = -47.5
 car_ground = -49
 
-# Top line is - 12
-# Bottom part (above wheels): -75
-# Below wheels : 
-print("hello world")
-print("bryce made a change")
-
+##### Run the plot through each individual drawing code #####
 fc.front_car(plt, car_top, car_bottom, car_ground)
 fsc.front_side_car(plt, car_top, car_bottom, car_ground)
-cd.front_side_car(plt, car_top, car_bottom, car_ground)
+cd.car_body(plt, car_top, car_bottom, car_ground)
 
-# Show the plot
+##### Show the plot #####
 plt.show()
