@@ -6,7 +6,7 @@ import car_body as cd
 
 # of the form min, max, diff
 xvars = [0, 220, 10]
-yvars = [-60, 0, 10]
+yvars = [60, 0, -10]
 
 ###### Set up our plot ######
 # Add aspect ratio, to prevent distortion
