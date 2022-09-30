@@ -21,9 +21,9 @@ plt.axis('on')
 plt.grid(True, color = 'k')
 
 ##### Declare other important variables #####
-car_top = -12
-car_bottom = -47.5
-car_ground = -49
+car_top = 12
+car_bottom = 47.5
+car_ground = 49
 
 ##### Run the plot through each individual drawing code #####
 fc.front_car(plt, car_top, car_bottom, car_ground)
