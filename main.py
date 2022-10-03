@@ -3,6 +3,7 @@ import numpy as np
 import front_car as fc
 import front_side_car as fsc
 import car_body as cd
+import car_end as ce
 
 # of the form min, max, diff
 xvars = [0, 220, 10]
@@ -29,6 +30,7 @@ car_ground = 49
 fc.front_car(plt, car_top, car_bottom, car_ground)
 fsc.front_side_car(plt, car_top, car_bottom, car_ground)
 cd.car_body(plt, car_top, car_bottom, car_ground)
+ce.car_end(plt, car_top, car_bottom, car_ground)
 
 ##### Show the plot #####
 plt.show()
