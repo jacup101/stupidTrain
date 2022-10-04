@@ -19,12 +19,16 @@ plt.xticks(np.arange(xvars[0], xvars[1], xvars[2]))
 plt.yticks(np.arange(yvars[0], yvars[1], yvars[2]))
 # Turn axis + grid on
 plt.axis('on')
-plt.grid(True, color = 'k')
+plt.grid(True, color = '0.5')
 
 ##### Declare other important variables #####
 car_top = 14
-car_bottom = 47.5
+car_bottom = 47
 car_ground = 49
+
+
+##### Define a ground line with the plot (because why not lol)
+plt.plot([5, 205], [car_ground, car_ground], linewidth = 1.5, color = 'black')
 
 ##### Run the plot through each individual drawing code #####
 fc.front_car(plt, car_top, car_bottom, car_ground)
