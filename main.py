@@ -6,8 +6,8 @@ import car_body as cd
 import car_end as ce
 
 # of the form min, max, diff
-xvars = [0, 220, 10]
-yvars = [60, 0, -10]
+xvars = [0, 220, 5]
+yvars = [60, 0, -5]
 
 ###### Set up our plot ######
 # Add aspect ratio, to prevent distortion
@@ -22,7 +22,7 @@ plt.axis('on')
 plt.grid(True, color = 'k')
 
 ##### Declare other important variables #####
-car_top = 12
+car_top = 14
 car_bottom = 47.5
 car_ground = 49
 
