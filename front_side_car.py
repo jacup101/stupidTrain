@@ -77,7 +77,7 @@ def plot_ellipses(plt):
         if ellipse.bot:
             plot_ellipse(plt, ellipse, ellipse.bdeg0, ellipse.bdeg1, 1)
 
-def front_side_car(plt, car_top, car_bottom, car_ground):
+def front_side_car(plt, axes, car_top, car_bottom, car_ground):
     """
     Constructs the front side portion of the train/car for the project
     :param plt: plot var from matplotlib

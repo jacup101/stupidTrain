@@ -9,9 +9,13 @@ import car_end as ce
 xvars = [0, 220, 5]
 yvars = [60, 0, -5]
 
+
+
+
 ###### Set up our plot ######
 # Add aspect ratio, to prevent distortion
-plt.axes().set_aspect(1)
+figure, axes = plt.subplots()
+axes.set_aspect(1)
 # Set up axis
 plt.axis([xvars[0], xvars[1], yvars[0], yvars[1]])
 # Add ticks
@@ -31,10 +35,10 @@ car_ground = 49
 plt.plot([5, 205], [car_ground, car_ground], linewidth = 1.5, color = 'black')
 
 ##### Run the plot through each individual drawing code #####
-fc.front_car(plt, car_top, car_bottom, car_ground)
-fsc.front_side_car(plt, car_top, car_bottom, car_ground)
-cd.car_body(plt, car_top, car_bottom, car_ground)
-ce.car_end(plt, car_top, car_bottom, car_ground)
+fc.front_car(plt, axes, car_top, car_bottom, car_ground)
+fsc.front_side_car(plt, axes, car_top, car_bottom, car_ground)
+cd.car_body(plt, axes, car_top, car_bottom, car_ground)
+ce.car_end(plt, axes, car_top, car_bottom, car_ground)
 
 ##### Show the plot #####
 plt.show()

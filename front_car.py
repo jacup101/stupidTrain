@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def front_car(plt, car_top, car_bottom, car_ground):
+def front_car(plt, axes, car_top, car_bottom, car_ground):
     car_bounds = [10, 40]
     
     x = [car_bounds[0], car_bounds[1], car_bounds[1], car_bounds[0], car_bounds[0]]

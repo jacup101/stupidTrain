@@ -29,7 +29,7 @@ def draw_arc(plt, xc, yc, r, startAngle, endAngle):
         ylast = y
     
     return
-def car_end(plt, car_top, car_bottom, car_ground):
+def car_end(plt, axes, car_top, car_bottom, car_ground):
     #--------------------------------------------------------------------------
     #2. SETUP
 
