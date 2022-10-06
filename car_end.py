@@ -2,7 +2,7 @@
 
 import numpy as np
 import math
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 
 """
 TODO
@@ -12,9 +12,10 @@ TODO
 - Keroppi in windowm (Sanrio theme)
 """
 
+
 #--------------------------------------------------------------------------
 #1. FUNCTIONS
-def draw_arc(plt, xc, yc, r, startAngle, endAngle):
+def draw_arc(xc, yc, r, startAngle, endAngle):
     p1 = startAngle*np.pi/180
     p2 = endAngle*np.pi/180
     dp = (p2-p1)/100
@@ -29,19 +30,28 @@ def draw_arc(plt, xc, yc, r, startAngle, endAngle):
         ylast = y
     
     return
-def car_end(plt, axes, car_top, car_bottom, car_ground):
-    #--------------------------------------------------------------------------
-    #2. SETUP
 
-    # I have commented these out for now, so it can show up for everyone. If you uncomment, it should show as you had it before, will probably help
+#--------------------------------------------------------------------------
+#2. SETUP
 
-    #Setup graph 
-    # plt.axis([170, 220, 60, 0])
+#Setup graph 
+""" 
+plt.axis([170, 220, 60, 0])
 
-    # plt.axis('on')
-    # plt.grid(True)
-    # plt.xticks(np.arange(170, 220, 10))
-    # plt.yticks(np.arange(0, 60, 10))
+plt.axis('on')
+plt.grid(True)
+plt.xticks(np.arange(170, 220, 10))
+plt.yticks(np.arange(0, 60, 10))
+
+
+#y-coordinates
+carTop = 14
+carBottom = 47
+carGround = 49
+
+"""
+
+def car_end(plt, carTop, carBottom, carGround, fig, ax):
 
     #y-coordinates
     carTop = 14
@@ -83,43 +93,90 @@ def car_end(plt, axes, car_top, car_bottom, car_ground):
     plt.plot([sectStart, sectEnd], [carTop + 7, carTop + 7], color='black')
 
 
-
     #Hook
-    #FIXME
-        #First bit of hook
-        #width of let's say 3? 
-    #Outermost right line
-    #We want a standard angle between the line and the car -- let's say 30
 
-    #Outermost left line on first portion
+    #Left lines on first portion
     startPointXL = sectStart + 8.5
-    endPointXL = sectStart + 14.5
-    endPointYL = carTop - 3
+    endPointXL = startPointXL + 6.8
+    endPointYL = carTop - 3.4
 
-    plt.plot([startPointXL, endPointXL], [carTop, endPointYL], color='black')
+    realEndPointXL = endPointXL - .2
+    plt.plot([startPointXL, realEndPointXL], [carTop, endPointYL - .4], color='black')
+    plt.plot([startPointXL + 1, realEndPointXL + .9], [carTop, endPointYL], color='black')
 
-    #Outermost right line on first portion
-    startPointXR = sectEnd - 9
-    endPointXR = sectEnd - 4.5
-    endPointYR = carTop - 1.7
-
-    plt.plot([startPointXR, endPointXR], [carTop, endPointYR], color='black')
-
-    #Inner left line on first portion
-    #startPointXL = startPointXL + 1
-    #endPointXL = endPointXL + 1
-    #endPointYL = endPointYL + 1
-
-    plt.plot([startPointXL + 1, endPointXL + 1], [carTop, endPointYL], color='black')
-
-    #Inner right line on first portion
-    startPointXR = startPointXR - 1
-    endPointXR = endPointXR - 1
-    #endPointYR = endPointYR
+    #Right lines on first portion
+    startPointXR = startPointXL + 6
+    endPointXR = endPointXL + 4
+    endPointYR = endPointYL + 1
 
     plt.plot([startPointXR, endPointXR], [carTop, endPointYR], color='black')
+    plt.plot([startPointXR - 1.3, endPointXR - 1.5], [carTop, endPointYR], color='black')
+
+    #Upper lines on second portion
+    startPointXR = endPointXR
+    startPointYR = endPointYR
+    endPointXR = startPointXR - 12
+    endPointYR = startPointYR - 6.5
+
+    plt.plot([startPointXR, endPointXR], [startPointYR, endPointYR], color='black')
+    plt.plot([startPointXR - 1.5, endPointXR], [startPointYR, endPointYR + 1], color='black')
+
+    #Lower lines on second portion -- SAME ANGLE AS ABOVE
+    startPointXL = 194.5
+    startPointYL = 10.5
+    endPointYL = endPointYR + 1.6
+
+    plt.plot([startPointXL, endPointXR], [startPointYL, endPointYL], color='black')
+    plt.plot([startPointXL - .5, endPointXR], [startPointYL + .4, endPointYL + .6], color='black')
+
+    #Straight lines at end of hook
+    lineYs = [endPointYR + 1, endPointYL, endPointYL + .6]
+    hookLineXStart = endPointXR - 1.9
+    for y in lineYs:
+        plt.plot([endPointXR, endPointXR - 1.9], [y, y], color='black')
+
+    #Topmost one is a tiny bit shorter
+    plt.plot([endPointXR, endPointXR - 1.5], [endPointYR, endPointYR], color='black')
+
+    #End of the hook
+    #topmost bit:
+    topHookXStart = endPointXR - 1.5
+    hookLineEndY = endPointYR - 1
+        #vert
+    plt.plot([topHookXStart, topHookXStart], [endPointYR, endPointYR - 1], color='black')
+        #horiz
+    plt.plot([topHookXStart, topHookXStart - 1.5], [endPointYR - 1, endPointYR - 1], color='black')
+        #vert down
+    plt.plot([topHookXStart - 1.5, topHookXStart - 1.5], [endPointYR - 1, endPointYR + .5], color='black')
+
+    #second bit:
+    hookLineXStart = endPointXR - 1.9
+    startY = lineYs[0]
+    endY = startY - 1.5
+
+        #vert
+    plt.plot([hookLineXStart, hookLineXStart], [startY, endY], color='black')
+        #horiz
+    plt.plot([hookLineXStart, hookLineXStart - .8], [endY, endY], color='black')
+        #vert down
+    plt.plot([hookLineXStart - .8, hookLineXStart - .8], [endY, endPointYR + .5], color='black')
+        #connecting horiz line to prev section
+    plt.plot([topHookXStart - 1.5, hookLineXStart - .8], [endPointYR + .5, endPointYR + .5], color='black')
+
+    lineXHolder = hookLineXStart - .8
 
 
+    #third bit: 
+        #vert line goes to "top" and ends section
+    plt.plot([hookLineXStart - .4, hookLineXStart - .4], [startY, endY], color='black')
+        #diagonal connecting line
+    plt.plot([hookLineXStart, hookLineXStart - .4], [lineYs[1], startY], color='black')
+
+    #fourth bit: 
+        #vertical line, .5 X/.2 Y from prev vert line
+    plt.plot([hookLineXStart - .8, hookLineXStart - .8], [startY + .2, endY], color='black')
+        #diagonal connecting line
+    plt.plot([hookLineXStart, hookLineXStart - .8], [lineYs[2], startY + .2], color='black')
 
 
     #Window
@@ -176,7 +233,7 @@ def car_end(plt, axes, car_top, car_bottom, car_ground):
 
 
     #Very bottom/ground
-    # plt.plot([10, 210], [carGround, carGround], color='black')
+    #plt.plot([10, 210], [carGround, carGround], color='black')
 
 
-    # plt.show()
+    #plt.show()
