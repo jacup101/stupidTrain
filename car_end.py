@@ -51,7 +51,7 @@ carGround = 49
 
 """
 
-def car_end(plt, carTop, carBottom, carGround, fig, ax):
+def car_end(plt, axes, carTop, carBottom, carGround):
 
     #y-coordinates
     carTop = 14

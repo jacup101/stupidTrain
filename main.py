@@ -9,9 +9,6 @@ import car_end as ce
 xvars = [0, 220, 5]
 yvars = [60, 0, -5]
 
-
-
-
 ###### Set up our plot ######
 # Add aspect ratio, to prevent distortion
 figure, axes = plt.subplots()
