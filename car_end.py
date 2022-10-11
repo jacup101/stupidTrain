@@ -1,27 +1,18 @@
-#Purple section -- by Campbell Gilbert
+'''
+Student Author Name: Campbell Gilbert
+Group Name: Team Sanrio
+Project 1
+Fall 2022
+COMP 313: Computer Graphics
+Professor Schiffer
+'''
 
 import numpy as np
 import math
 import matplotlib.pyplot as plt
 
 #--------------------------------------------------------------------------
-#1. SETUP for use on own
-
-"""
-plt.axis([170, 220, 60, 0])
-
-plt.axis('on')
-plt.grid(True)
-plt.xticks(np.arange(170, 220, 10))
-plt.yticks(np.arange(0, 60, 10))
-
-#y-coordinates
-carTop = 14
-carBottom = 47
-carGround = 49
-
-#"""
-
+#1. SETUP
 def car_end(plt, ax, carTop, carBottom, carGround):
     #x-coordinates
     #End of "main" car section
