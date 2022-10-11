@@ -92,6 +92,7 @@ def front_side_car(plt, axes, car_top, car_bottom, car_ground):
     plot_circles(plt)
     populate_ellipses()
     plot_ellipses(plt)
+    add_decorations(plt, axes)
 
 def plot_line(plt, line: Line):
     """
@@ -176,15 +177,15 @@ def populate_lines(top, bottom, ground):
     # lines.append(Line(67.5, bottom, 66, 45, 'black'))
 
     # Slightly above line
-    lines.append(Line(67, 45, 90, 45, 'black'))
+    lines.append(Line(67.8, bottom - 1, 90, bottom - 1, 'black'))
     # lines.append(Line(66, 45, 66, 44.5, 'black'))
 
     # Slightly above that
-    lines.append(Line(66.4, 44.5, 90, 44.5, 'black'))
+    lines.append(Line(67, bottom - 1.6, 90, bottom - 1.6, 'black'))
     # lines.append(Line(65.5, 44.5, 65.5, 44, 'black'))
 
     # Slightly above that
-    lines.append(Line(66.4, 44, 90, 44, 'black'))
+    lines.append(Line(66.5, bottom - 2.2, 90, bottom - 2.2, 'black'))
 
     # Lines above those
     lines.append(Line(66.3, 42, 90, 42, 'black'))
@@ -271,6 +272,78 @@ def populate_ellipses():
     ellipses.append(Ellipse(90, 19, 10, 3, 'black', bot = False, tdeg0 = 110, tdeg1 = 270))
     # Upside down arc in window
     ellipses.append(Ellipse(90, 19, 9.5, 1.8, 'black', top = False, bdeg0 = 110, bdeg1 = 270))
+
+### Decorations
+def add_decorations(plt, axes):
+    add_flower(plt, axes, 76.5, 37.5, 1, 'pink')
+    add_flower(plt, axes, 86.5, 35, 1, 'pink')
+    add_flower(plt, axes, 82, 39, .75, 'red')
+    add_flower(plt, axes, 87, 39.5, .5, 'blue')
+    add_flower(plt, axes, 80.5, 35, .5, 'purple')
+    add_flower(plt, axes, 73.5, 39.5, .3, 'red')
+    add_flower(plt, axes, 76, 34, .3, 'blue')
+    draw_hello_kitty(plt, axes)
+    
+
+def add_flower(plt, axes, xc, yc, radius, color):
+    # Order: top leaf, bot leaf, left top, left bot, right top, right bot
+    xdiff = [0, 0, 0, 0, -radius, -radius, radius, radius]
+    ydiff = [0, 0, -radius, radius, -radius/2, radius/2, -radius/2, radius/2]
+    for i in range(len(xdiff)):
+        axes.add_artist(plt.Circle((xc + xdiff[i], yc + ydiff[i]), radius, color=color))
+    center = plt.Circle((xc, yc), radius, color='yellow')
+    axes.add_artist(center)
+
+def draw_hello_kitty(plt, axes):
+    # Head
+    head = Ellipse(82.5, 25.5, 3, 3, 'black', tdeg0 = 0, tdeg1 = 75)
+    head2 = Ellipse(82.5, 25.5, 3, 3, 'black', tdeg0 = 280)
+    plot_ellipse(plt, head, head.tdeg0, head.tdeg1, -1)
+    plot_ellipse(plt, head2, head2.tdeg0, head2.tdeg1, -1)
+    plot_ellipse(plt, head, head.bdeg0, head.bdeg1, 1)
+
+
+    # Ear
+    left_ear_line = Line(81.5, 23, 82.5, 22, 'black')
+    #plot_line(plt, left_ear_line)
+    right_ear_line = Line(83.5, 23, 82.5, 22, 'black')
+    #plot_line(plt, right_ear_line)
+    ear = Ellipse(82.5, 24.5, 1, 3, 'black', tdeg0 = 60, tdeg1=120, )
+    plot_ellipse(plt, ear, ear.tdeg0, ear.tdeg1, -1)
+
+
+
+    # Whiskers
+    lower_whisker = Line(80.75, 26.5, 82.5, 27, 'black')
+    plot_line(plt, lower_whisker)
+    mid_whisker = Line(80.75, 26, 82.5, 26, 'black')
+    plot_line(plt, mid_whisker)
+    upper_whisker = Line(80.75, 25.5, 82.5, 25, 'black')
+    plot_line(plt, upper_whisker)
+
+    # Eye
+    axes.add_artist(plt.Circle((80.5, 24.5), .15, color='k'))
+
+    # Body
+    bodyX = [81, 83, 83, 81, 81]
+    bodyY = [31.5, 31.5, 29, 28, 31.5]
+    plt.fill(bodyX, bodyY, color='blue')
+    # left_body = Line(81, 31, 81, 28, 'blue')
+    # plot_line(plt, left_body)
+    # right_body = Line(83, 31, 83, 28, 'blue')
+    # plot_line(plt, right_body)
+
+    # Bow
+    bow = np.array([[81,22.5], [82.5,21.75], [82.5,23.25]])
+    bowX = [81, 82.5, 82.5, 81]
+    bowY = [22.5, 21.75, 23.25, 22.5]
+    bow_plt = plt.Polygon(bow, color='red')
+    axes.add_artist(bow_plt)
+    #plt.fill(bowX, bowY, color='red')
+
+
+
+
     
 
 
