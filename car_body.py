@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 
 def arc(xc, yc, r, a1, a2):
     p1 = a1 * np.pi / 180
@@ -14,34 +13,6 @@ def arc(xc, yc, r, a1, a2):
         plt.plot([xlast, x], [ylast, y], color='black')
         xlast = x
         ylast = y
-
-def ellipse(xc, yc, a, b, deg0=0, deg1=180, step=0.5, half=1, color='k'):
-    alpha1 = np.radians(deg0)
-    alpha2 = np.radians(deg1)
-    dalpha = np.radians(step)
-
-    # Starting values are null at start, since we want to account for non standard angles. This allows us to use the ellipse function to draw arcs
-    xlast = 'null'
-    ylast = 'null'
-
-    for alpha in np.arange(alpha1, alpha2 + dalpha, dalpha):
-        # Note here that x and y stand for delta x and delta y
-        # To avoid the div by zero, we place in an if statement
-        if (np.tan(alpha) != 0):
-            x = np.abs(a * b / np.sqrt(math.pow(b, 2) + (math.pow(a, 2) * math.pow(np.tan(alpha), 2))))
-            y = np.abs(a * b / np.sqrt(math.pow(a, 2) + math.pow(b, 2) * (1 / math.pow(np.tan(alpha), 2))))
-
-            if alpha > np.pi / 2:
-                x = -x
-            # Divide by zero condition
-            if xlast == 'null':
-                xlast = x
-            if ylast == 'null':
-                ylast = y
-            plt.plot([xc + xlast, xc + x], [yc + half * ylast, yc + half * y], linewidth=1, color=color)
-
-            xlast = x
-            ylast = y
 
 def car_body(plt, axes, car_top, car_bottom, car_ground):
     carTop = 14
