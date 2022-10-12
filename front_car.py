@@ -12,37 +12,27 @@ import matplotlib.pyplot as plt
 import math
 
 #params
-#car_bounds = [6, 36]
-car_bounds = [10, 40]
+car_bounds = [6, 36]
 
-def ellipse(xc, yc, a, b, deg0 = 0, deg1 = 180, step = 0.5, half = 1, color = 'k'):
-    alpha1 = np.radians(deg0)
-    alpha2 = np.radians(deg1)
-    dalpha = np.radians(step)
-
-    # Starting values are null at start, since we want to account for non standard angles. This allows us to use the ellipse function to draw arcs  
-    xlast = 'null'
-    ylast = 'null'
-
-    for alpha in np.arange(alpha1, alpha2 + dalpha, dalpha):
-        # Note here that x and y stand for delta x and delta y
-        # To avoid the div by zero, we place in an if statement
-        if(np.tan(alpha) != 0):
-            x = np.abs(a * b / np.sqrt(math.pow(b, 2) + (math.pow(a, 2) * math.pow(np.tan(alpha), 2))))
-            y = np.abs(a * b / np.sqrt(math.pow(a, 2) + math.pow(b, 2) * (1 / math.pow(np.tan(alpha), 2))))
-
-            if alpha > np.pi / 2:
-                x = -x
-            # Divide by zero condition
-            if xlast == 'null':
-                xlast = x
-            if ylast == 'null':
-                ylast = y
-            plt.plot([xc + xlast, xc + x], [yc + half * ylast, yc + half * y], linewidth = 1, color = color)
-            
-            xlast = x
-            ylast = y
-
+def ellipse(xc, yc, a, b, theta1 = 0, theta2 = 180, density = 300, half = -1, color = 'k'):
+    p1 = np.radians(theta1)
+    p2 = np.radians(theta2)
+    dp = (p2 - p1) / density
+    
+    xplast = a
+    yplast = 0
+    
+    for p in np.arange(p1, p2 + dp, dp):
+        if (np.tan(p) != 0):
+            xp = np.abs(a * b / np.sqrt(math.pow(b, 2) + (math.pow(a, 2) * math.pow(np.tan(p), 2))))
+            yp = np.abs(a * b / np.sqrt(math.pow(a, 2) + math.pow(b, 2) * (1 / math.pow(np.tan(p), 2))))
+            if p > np.pi / 2:
+                xp = -xp
+            if p1 < p < p2:
+                plt.plot([xc + xplast, xc + xp], [yc + (half * yplast), yc + (half * yp)], linewidth = 1, color = color)
+            xplast = xp
+            yplast = yp
+    
 def front_car(plt, axes, car_top, car_bottom, car_ground):
     car_sketch(plt, axes, car_top, car_bottom, car_ground)
     car_body(plt, axes, car_top, car_bottom, car_ground)
@@ -58,8 +48,6 @@ def car_sketch(plt, axes, car_top, car_bottom, car_ground):
 def wheels(plt, axes, car_top, car_bottom, car_ground):
     wheel_offset = 6
     wheel_width = 1.5
-    
-    plt.plot(car_bounds[0])
     
     x1c = car_bounds[0] + wheel_offset
     x2c = car_bounds[1] - wheel_offset
@@ -90,16 +78,16 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     b = p2[1] - p1[1]
     xc = p2[0]
     yc = p1[1]
-    ellipse(xc, yc, a, b, 270, 360)
+    ellipse(xc, yc, a, b, 270, 360, half = 1)
     
     xc = car_bounds[1] - bottom_offset
     yc = car_bottom - side_offset
-    ellipse(xc, yc, a, b, 0, 90)
+    ellipse(xc, yc, a, b, 0, 90, half = 1)
     
     #head ellipse
-    box_top = car_top + 3
-    box_bottom = box_top + 2
-    side_offset = 1
+    box_top = car_top + 3.5
+    box_bottom = box_top + 3
+    side_offset = 1.5
     
     p1 = (car_bounds[0], yc_main)
     p2 = (car_bounds[0] + side_offset, box_bottom)
@@ -107,7 +95,7 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     b = p2[1] - p1[1]
     xc = p2[0]
     yc = p1[1]
-    ellipse(xc, yc, a, b, 90, 180, half = -1)
+    ellipse(xc, yc, a, b, 90, 180)
     
     p1 = (car_bounds[1], yc_main)
     p2 = (car_bounds[1] - side_offset, box_bottom)
@@ -115,10 +103,11 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     b = p2[1] - p1[1]
     xc = p2[0]
     yc = p1[1]
-    ellipse(xc, yc, a, b, 0, 90, half = -1)
+    ellipse(xc, yc, a, b, 10, 90)
     
     body_details(plt, axes, car_top, car_bottom, car_ground, side_offset)
     car_head(plt, axes, car_top, car_bottom, car_ground, box_top, box_bottom, side_offset)
+    windows(plt, axes, car_top, car_bottom, car_ground, box_bottom)
 
 def body_details(plt, axes, car_top, car_bottom, car_ground, side_offset):
     
@@ -131,7 +120,7 @@ def body_details(plt, axes, car_top, car_bottom, car_ground, side_offset):
     light_height = 2
     
     x = [car_bounds[0], car_bounds[1]]
-    y = np.array([car_bottom - side_offset, car_bottom - side_offset])
+    y = np.array([car_bottom - side_offset - sep1, car_bottom - side_offset - sep1])
     
     plt.plot(x, y, linewidth = 1, color = 'k')
     y = y - sep1
@@ -173,13 +162,83 @@ def car_head(plt, axes, car_top, car_bottom, car_ground, box_top, box_bottom, si
     a = p2[0] - xc
     yc = y[0]
     
-    ellipse(xc, yc, a, b, half = -1)
+    ellipse(xc, yc, a, b, 0 , 180)
     
     p1 = (x1[0], y[1])
     p2 = (x2[0], y[1])
-    b = (car_top - box_top) / 2
+    b = (car_top - box_top) / 1
     xc = (p2[0] + p1[0]) / 2
     a = p2[0] - xc
     yc = y[1]
     
-    ellipse(xc, yc, a, b, half = -1)
+    ellipse(xc, yc, a, b)
+    
+def windows(plt, axes, car_top, car_bottom, car_ground, box_bottom):
+    yc_main = (car_top + car_bottom) / 2
+    sep = 0.5
+    side_offset = 3.5
+    
+    #bottom line 1
+    x = [car_bounds[0] + side_offset, car_bounds[1] - side_offset]
+    y = np.array([yc_main + 0.5 + (sep * 2), yc_main + 0.5 + (sep * 2)])
+    plt.plot(x, y, linewidth = 1, color = 'k')
+    
+    #side lines 1
+    x1 = [x[0], x[0] + sep * 2]
+    x2 = [x[1], x[1] - sep * 2]
+    y1 = [y[0], box_bottom - (sep * 3)]
+    plt.plot(x1, y1, linewidth = 1, color = 'k')
+    plt.plot(x2, y1, linewidth = 1, color = 'k')
+    
+    #elliptical arc 1
+    p1 = (x1[1], y1[1])
+    p2 = (x2[1], y1[1])
+    b = sep * 3
+    xc = (p2[0] + p1[0]) / 2
+    a = p2[0] - xc
+    yc = y1[1]
+    ellipse(xc, yc, a, b, 0 , 180)
+    
+    #bottom line 2
+    x[0] += sep
+    x[1] -= sep
+    y -= sep
+    plt.plot(x, y, linewidth = 1, color = 'k')
+    
+    #side lines 2
+    x1 = [x[0], x[0] + sep * 2]
+    x2 = [x[1], x[1] - sep * 2]
+    y1 = [y[0], box_bottom - (sep * 2)]
+    plt.plot(x1, y1, linewidth = 1, color = 'k')
+    plt.plot(x2, y1, linewidth = 1, color = 'k')
+    
+    #elliptical arc 2
+    p1 = (x1[1], y1[1])
+    p2 = (x2[1], y1[1])
+    b = sep * 3
+    xc = (p2[0] + p1[0]) / 2
+    a = p2[0] - xc
+    yc = y1[1]
+    ellipse(xc, yc, a, b, 0 , 180)
+    
+    #bottom line 3
+    x[0] += sep
+    x[1] -= sep
+    y -= sep
+    plt.plot(x, y, linewidth = 1, color = 'k')
+    
+    #side lines 3
+    x1 = [x[0], x[0] + sep * 2]
+    x2 = [x[1], x[1] - sep * 2]
+    y1 = [y[0], box_bottom - (sep * 1)]
+    plt.plot(x1, y1, linewidth = 1, color = 'k')
+    plt.plot(x2, y1, linewidth = 1, color = 'k')
+    
+    #elliptical arc 3
+    p1 = (x1[1], y1[1])
+    p2 = (x2[1], y1[1])
+    b = sep * 3
+    xc = (p2[0] + p1[0]) / 2
+    a = p2[0] - xc
+    yc = y1[1]
+    ellipse(xc, yc, a, b, 0 , 180)
