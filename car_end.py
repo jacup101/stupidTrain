@@ -15,15 +15,24 @@ import matplotlib.pyplot as plt
 #1. SETUP
 def car_end(plt, ax, carTop, carBottom, carGround):
     #x-coordinates
-    #End of "main" car section
-    sectEnd = 202
-
     #Beginning of this section, end of green section
     sectStart = 180
+    #End of "main" car section, not counting lines on the very back
+    sectEnd = 202
 
     #--------------------------------------------------------------------------
-    #2. HELPER FUNCTION/S
+    #2. HELPER FUNCTION S
     def draw_circle(xc=20, yc=20, r=50, circColor='red', deg1=0, deg2=360, width=1):
+        """
+        Draws circle or arc at given location.
+        :param xc: center x-coord
+        :param yc: center y-coord
+        :param r: radius
+        :param circColor: color of circle
+        :param deg1: initial degree (default 0 for circle)
+        :param deg2: final/ending degreen (default 360 for circle)
+        :param width: linewidth 
+        """
         p1 = deg1*np.pi/180
         p2 = deg2*np.pi/180
         dp = (p2-p1)/100
@@ -35,6 +44,26 @@ def car_end(plt, ax, carTop, carBottom, carGround):
             plt.plot([xlast, x], [ylast, y], linewidth = width, color=circColor)
             xlast = x 
             ylast = y
+    
+    def add_flower(xc, yc, radius, color):
+        """
+        Adds a flower to a given location
+        :param plt: matplotlib plot instance
+        :param axes: axes of plot subplot
+        :param xc: center x coordinate
+        :param yc: center y coordinate
+        :param radius: radius of the center and leaves
+        :param color: color of the leaves
+        :returns: None
+        """
+        #Petals drawn in order: top, bottom, left top, left bottom, right top, right bottom
+        xdiff = [0, 0, -radius, -radius, radius, radius]
+        ydiff = [-radius, radius, -radius/2, radius/2, -radius/2, radius/2]
+        for i in range(len(xdiff)):
+            draw_circle(xc + xdiff[i], yc + ydiff[i], radius / 2, color, 0, 360)
+        #Center
+        draw_circle(xc, yc, radius / 1.5, 'yellow', 0, 360)
+        
     #--------------------------------------------------------------------------
     #3. ACTUAL CODE/DRAWING FUNCTIONS
 
@@ -50,10 +79,11 @@ def car_end(plt, ax, carTop, carBottom, carGround):
             #arcs between lines
             xc = sectEnd + (i - .25)
             r = .25
+                #top arc
             angleT1 = 0
             angleT2 = -180
             draw_circle(xc, lineTop, r, 'pink', angleT1, angleT2)
-
+                #bottom arc
             angleB1 = 0
             angleB2 = 180
             draw_circle(xc, lineBottom, r, 'pink', angleB1, angleB2)
@@ -64,7 +94,7 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         plt.plot([sectEnd, sectEnd], [lineTop, lineBottom + .25], linewidth=2.5, color='pink')
         plt.plot([sectEnd, sectEnd], [carTop, carBottom], linewidth=1, color='pink')
 
-    #top section of car 
+    #Top section of car 
     def topOfCar(sectStart, sectEnd, carTop):
         #Top of the car, below the hook
         plt.plot([sectStart, sectEnd], [carTop, carTop], color='pink')
@@ -73,8 +103,8 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         plt.plot([sectStart, sectEnd], [carTop + 5, carTop + 5], color='pink')
         plt.plot([sectStart, sectEnd], [carTop + 7, carTop + 7], color='pink')
 
-    #hook on top
-    def hook(sectStart, sectEnd, carTop):
+    #Hook on top
+    def hook(sectStart, carTop):
         #Left lines on first portion
         startPointXL = sectStart + 8.5
         endPointXL = startPointXL + 6.8
@@ -144,9 +174,7 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         plt.plot([hookLineXStart - .8, hookLineXStart - .8], [endY, endPointYR + .5], color='pink')
             #connecting horiz line to prev section
         plt.plot([topHookXStart - 1.5, hookLineXStart - .8], [endPointYR + .5, endPointYR + .5], color='pink')
-
-        lineXHolder = hookLineXStart - .8
-
+        
         #third bit: 
             #vert line goes to "top" and ends section
         plt.plot([hookLineXStart - .4, hookLineXStart - .4], [startY, endY], color='pink')
@@ -154,18 +182,15 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         plt.plot([hookLineXStart, hookLineXStart - .4], [lineYs[1], startY], color='pink')
 
         #fourth bit: 
+        lineXHolder = hookLineXStart - .8
             #vertical line, .5 X/.2 Y from prev vert line
-        plt.plot([hookLineXStart - .8, hookLineXStart - .8], [startY + .2, endY], color='pink')
+        plt.plot([lineXHolder, lineXHolder], [startY + .2, endY], color='pink')
             #diagonal connecting line
 
-        plt.plot([hookLineXStart, hookLineXStart - .8], [lineYs[2], startY + .2], color='pink')
+        plt.plot([hookLineXStart, lineXHolder], [lineYs[2], startY + .2], color='pink')
 
-    #window
-    def window(sectStart, sectEnd, carBottom):
-        #Window
-        windowLeft = sectStart + 3
-        windowRight = sectEnd - 3
-
+    #Window
+    def window(carBottom, windowLeft, windowRight):
             #2 V lines below the bottom of the "top" lines, maybe 3 units in and 1 unit down
         plt.plot([windowLeft + 1, windowLeft + 1], [carTop + 7, carTop + 8], color='pink')
         plt.plot([windowRight - 1, windowRight - 1], [carTop + 7, carTop + 8], color='pink')
@@ -186,6 +211,7 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         
         xc1 = windowLeft + .5
         xc2 = windowRight - .5
+            #
         angleR1 = 0
         angleR2 = 90
         yc = carBottom - 10 #window bottom + .5
@@ -196,12 +222,7 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         draw_circle(xc2, yc, r, 'pink', angleR1, angleR2)
 
     #Keroppi in window :)
-    def frog(sectStart, sectEnd, carBottom, carTop):
-        windowLeft = sectStart + 3
-        windowRight = sectEnd - 3
-        windowBottom = carBottom - 9.5
-        windowTop = carTop + 7
-
+    def frog(windowLeft, windowRight, windowBottom):
         #face
         faceMiddle = (windowLeft + windowRight) / 2
         xc = faceMiddle
@@ -252,14 +273,9 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         plt.plot([faceMiddle + 3.1, faceMiddle - 3.1], [faceBottom + .5, faceBottom + .5], linewidth = 3, color='blue')
         plt.plot([faceMiddle + 3.3, faceMiddle - 3.3], [faceBottom + 2, faceBottom + 2], linewidth = 3, color='blue')
         
-    #bottom section of car, including bottom "box"
+    #Bottom section of car, including bottom "box"
     def bottomOfCar(sectStart, sectEnd, carBottom):
         #Bottom of car, above the wheels
-
-        plt.plot([sectStart, sectEnd], [carBottom - 5, carBottom - 5], color='pink')
-        plt.plot([sectStart, sectEnd], [carBottom - 2.2, carBottom - 2.2], color='pink')
-        plt.plot([sectStart, sectEnd], [carBottom - 1.6, carBottom - 1.6], color='pink')
-        
         plt.plot([sectStart, sectEnd], [carBottom - 5, carBottom - 5], color='pink')
         plt.plot([sectStart, sectEnd], [carBottom - 2.2, carBottom - 2.2], color='pink')
         plt.plot([sectStart, sectEnd], [carBottom - 1.6, carBottom - 1.6], color='pink')
@@ -268,11 +284,10 @@ def car_end(plt, ax, carTop, carBottom, carGround):
 
         #Box thingy on very bottom
             #Vertical lines making up "sides" of "box"
-        plt.plot([sectStart + 7, sectStart + 7], [carBottom, carGround - 1], color='pink')
-        plt.plot([sectEnd - 7, sectEnd - 7], [carBottom, carGround - 1], color='pink')
-
+        plt.plot([sectStart + 7, sectStart + 7], [carBottom, carBottom + 1], color='pink')
+        plt.plot([sectEnd - 7, sectEnd - 7], [carBottom, carBottom + 1], color='pink')
             #Horizontal line at bottom of "box"
-        plt.plot([sectStart + 7, sectEnd - 7], [carGround - 1, carGround - 1], color='pink')
+        plt.plot([sectStart + 7, sectEnd - 7], [carBottom + 1, carBottom + 1], color='pink')
 
     #Wheels
     def wheels(sectStart, sectEnd, carBottom):
@@ -282,17 +297,46 @@ def car_end(plt, ax, carTop, carBottom, carGround):
         r = 2.5
         draw_circle(xc1, yc, r, 'pink', 15, 165)
         draw_circle(xc2, yc, r, 'pink', 15, 165)
+   
+    #Flower decorations
+    def drawFlowers(sectStart, sectEnd, carTop, windowLeft, windowRight, windowBottom, windowTop):
+        #left of window
+        add_flower(windowLeft - .5, windowTop + 1, .5, 'green')
+        add_flower(windowLeft - 1.5, windowTop + 4, .8, 'blue')
+        add_flower(windowLeft - 1.3, windowTop + 7, .6, 'orange')
+        add_flower(windowLeft - 1.7, windowTop + 12, .8, 'purple')
+
+        #below window
+        add_flower(sectStart + 1.8, windowBottom + 1.5, 1, 'red')
+        add_flower(sectStart + 5, windowBottom + 3, .9, 'purple')
+        add_flower(windowRight - 8, windowBottom + 1.8, .5, 'blue')
+        add_flower(windowRight - 1, windowBottom + 2.8, 1, 'green')
+        add_flower(windowRight - 6, windowBottom + 2, .8, 'orange')
+
+        #right of window
+        add_flower(sectEnd - 1.5, windowTop + 2, .8, 'red')
+        add_flower(sectEnd - 1.2, windowTop + 9, .5, 'purple')
+        add_flower(sectEnd - 1.5, windowTop + 11, .5, 'blue')
+
+        #hook tippy top
+        endPointYR = (carTop - 3.4 + 1) - 6.5
+        add_flower(sectStart + 5, endPointYR - 1.5, .6, 'purple')
 
 
     #--------------------------------------------------------------------------
     #4. CALLING CODE FUNCTIONS
+    #helper variables
+    windowLeft = sectStart + 3
+    windowRight = sectEnd - 3
+    windowBottom = carBottom - 9.5
+    windowTop = carTop + 7
+    
+    #calling functions
     backOfCarLines(carTop, carBottom, sectEnd)
     topOfCar(sectStart, sectEnd, carTop)
-    hook(sectStart, sectEnd, carTop)
-    window(sectStart, sectEnd, carBottom)
-    frog(sectStart, sectEnd, carBottom, carTop)
+    hook(sectStart, carTop)
+    window(carBottom, windowLeft, windowRight)
+    frog(windowLeft, windowRight, windowBottom)
     bottomOfCar(sectStart, sectEnd, carBottom)
     wheels(sectStart, sectEnd, carBottom)
-
-    #just for cleanliness' sake, line in front of car as well
-    plt.plot([sectStart, sectStart], [carTop, carBottom], linewidth=1, color='pink')
+    drawFlowers(sectStart, sectEnd, carTop, windowLeft, windowRight, windowBottom, windowTop)
