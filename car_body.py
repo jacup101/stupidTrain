@@ -81,6 +81,16 @@ def lineOnTopOfCar():
     plt.plot([sectStart, sectEnd], [carTop + 5, carTop + 5], color='pink')
     plt.plot([sectStart, 173.5], [carTop + 7, carTop + 7], color='pink')
 
+def verticalLines():
+    plt.plot([94.5, 94.5], [carTop + 7, carBottom - 1], color='pink')
+    plt.plot([96, 96], [carTop + 7, carBottom - 1], color='pink')
+    plt.plot([97, 97], [carTop + 7, carBottom], color='pink')
+    plt.plot([115, 115], [carTop + 7, carBottom], color='pink')
+    plt.plot([152.5, 152.5], [carTop + 7, carBottom], color='pink')
+    plt.plot([170.5, 170.5], [carTop + 7, carBottom], color='pink')
+    plt.plot([172, 172], [carTop + 7, carBottom - 1], color='pink')
+    plt.plot([173.5, 173.5], [carTop + 7, carBottom - 1], color='pink')
+
 def createFirstWindow():
     firstWindLeft = 98.5
     firstWindRight = 113.5
@@ -170,6 +180,7 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     # making the train
     linesSeperatingCars()
     lineOnTopOfCar()
+    verticalLines()
     createFirstWindow()
     createSecondWindow()
     createThirdWindow()
@@ -219,4 +230,3 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     add_flower(plt, axes, 177, 43.5, .75, 'green')
     add_flower(plt, axes, 120, 40, .75, 'purple')
     add_flower(plt, axes, 150, 40, .75, 'green')
-
