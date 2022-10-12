@@ -190,9 +190,6 @@ def car_body(plt, axes, car_top, car_bottom, car_ground):
     plt.plot([173.5, sectEnd], [carBottom - 2.2, carBottom - 2.2], color='pink')
     plt.plot([173.5, sectEnd], [carBottom - 1.6, carBottom - 1.6], color='pink')
 
-
-
-
     plt.plot([sectStart, sectEnd], [carBottom - 1, carBottom - 1], color='pink')
     plt.plot([sectStart, sectEnd], [carBottom, carBottom], color='pink')
 
