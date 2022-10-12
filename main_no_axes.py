@@ -24,12 +24,9 @@ figure, axes = plt.subplots()
 axes.set_aspect(1)
 # Set up axis
 plt.axis([xvars[0], xvars[1], yvars[0], yvars[1]])
-# Add ticks
-plt.xticks(np.arange(xvars[0], xvars[1], xvars[2]))
-plt.yticks(np.arange(yvars[0], yvars[1], yvars[2]))
+
 # Turn axis + grid on
-plt.axis('on')
-plt.grid(True, color = '0.5')
+plt.axis('off')
 
 ##### Declare other important variables #####
 car_top = 14

@@ -1,3 +1,12 @@
+'''
+Student Author Name: Cathy Yim
+Group Name: Team Sanrio
+Project 1
+Fall 2022
+COMP 313: Computer Graphics
+Professor Schiffer
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
 
